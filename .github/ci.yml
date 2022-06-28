@@ -1,0 +1,45 @@
+name: 'ci only'
+env:
+  #
+  # gh settings
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: 
+    - develop
+    - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        app_name: [cockpit]
+
+    defaults:
+      run:
+        working-directory: ./${{ matrix.app_name }} 
+
+    outputs:
+      version: ${{ steps.version_output.outputs.version_number }}
+      
+    runs-on: [self-hosted, ubuntu-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install angular/cli
+        run: npm install -g @angular/cli > /dev/null
+
+      - name: Install app
+        run: npm ci --prefer-offline
+
+      - name: Build
+        run: npm run-script build
