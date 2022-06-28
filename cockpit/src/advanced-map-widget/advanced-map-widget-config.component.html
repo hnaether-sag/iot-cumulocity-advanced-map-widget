@@ -1,0 +1,35 @@
+<sub-device-resolver
+  [device]="config?.device"
+  (subDevices)="onSubDevicesChanged($event)"
+></sub-device-resolver>
+
+<div class="form-inline">
+  <div class="form-group">
+    <button
+      type="button"
+      class="btn btn-primary btn-icon"
+      (click)="openEventTrackCreatorModal()"
+    >
+      <i c8yIcon="history"></i>&nbsp;Create track from events
+    </button>
+  </div>
+
+  <div class="form-group">
+    <button
+      type="button"
+      class="btn btn-primary btn-icon"
+      (click)="openDrawTrackCreatorModal()"
+    >
+      <i c8yIcon="pencil"></i>&nbsp;Draw track
+    </button>
+  </div>
+</div>
+
+<track-list
+  title="Tracks"
+  [tracks]="config?.tracks"
+  [selectedTrackName]="config?.selectedTrack"
+  [selectable]="true"
+  (deleteTrack)="deleteTrack($event)"
+  (userChangedSelection)="userChangedSelection($event)"
+></track-list>
